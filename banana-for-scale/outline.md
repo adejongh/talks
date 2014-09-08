@@ -8,6 +8,7 @@ Know your metrics
 Dive a bit into the metrics that people like to use - and then show why they do not work well (e.g. average)
 Look at the different kinds of metrics given by codahale
 Explain why 95th is good
+TPS - what is it exactly
 
 
 Know your system
