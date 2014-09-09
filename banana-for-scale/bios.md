@@ -1,0 +1,13 @@
+# BIO Chris Oloff
+
+Chris has been working with very small and not-so-small-anymore companies since
+1994 in the IT industry in Germany, The Netherlands and South Africa. He enjoys
+supporting enterprise processes by IT, designs and creates software in complex
+environments.
+
+Chris strives to write great code and to implement efficient software
+development methodologies in existing or new teams. He likes the challenges of
+leadership and motivation to achieve great performance.
+
+He has an Honours Degree in Computer Science and Economics from the University
+of Mannheim, Germany.
