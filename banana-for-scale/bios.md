@@ -21,7 +21,8 @@ Albert is a software architect at Visa.  He is the technical lead of the DevOps 
 and is trying to improve the world two weeks at a time.  Sometimes it works out.
 
 Albert previously worked at Postilion (now ACI), Sanlam, Metafour in London and 
-for a University in Konstanz Germany.
+for Hochschule Konstanz in Germany.  He holds a masters in Computer Science from
+the University of Stellenbosch.
 
-In his free time he gets pulled around by his two Weimaraners and spends money on hs
-Land Rover.
+In his free time he gets pulled around by his two Weimaraners and spends money on his
+Land Rover (sometimes willingly).
