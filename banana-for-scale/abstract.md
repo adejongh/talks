@@ -7,3 +7,11 @@ Chris and Albert will share some thoughts on what happens when you scale large s
 * Know your metrics for what they really are
 * Know your system really really well
 * Make one change at a time
+
+---
+
+A heavily loaded transaction processing system, a struggling client, and angry
+customers threatining them with violence... Albert and Chris were faced with
+this scaling challenge, and helped resolving it (for now). They would like to
+share their experience, and present some lessons learnt. ... and they'll
+explain why bananas were *not* suitable for scale.
