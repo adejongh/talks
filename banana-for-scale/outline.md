@@ -1,8 +1,6 @@
 Outline for the talk
 ====================
 
-Late night ramblings...  Feel free to tear apart
-
 Know your metrics
 -----------------
 Dive a bit into the metrics that people like to use - and then show why they do not work well (e.g. average)
@@ -25,3 +23,5 @@ behaviour (performance) of your system is better, it was due to *this* change.
 If you make 3 changes, and performance is better, you won't know which change
 caused it.
 Favorite quote: Assumptions is the mother of all ****-ups.
+
+Do we have an example of a few changes together that caused this?
