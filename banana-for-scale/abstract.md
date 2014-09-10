@@ -17,3 +17,10 @@ customers threatining them with violence... Albert and Chris were faced with
 this scaling challenge, and helped resolving it (for now). They would like to
 share their experience, and present some lessons learnt. ... and they'll
 explain why bananas were *not* suitable for scale.
+
+---
+
+The third option
+----------------
+
+Heavily loaded transaction processing systems, struggling clients...  Albert and Chris have been faced with scaling challenges like this, and would like to share their experience.  They will present some lessons learnt... and they'll explain why bananas were *not* suitable for scale.
