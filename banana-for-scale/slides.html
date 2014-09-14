@@ -21,8 +21,57 @@
 
 class: center, middle
 
-Banana for scale
+Banana for Scale
 ================
+
+Some lessons learnt, and why bananas may not help.
+
+By [Albert de Jongh](https://www.linkedin.com/in/albertdejongh) and [Chris Oloff](http://twitter.com/chrisoloff),
+prepared for SPIN, 17th September 2014
+
+
+---
+
+# Disclaimer
+
+## Please Note
+
+All names, examples, figures and PITAs presented and discussed during this talk
+are anecdotal. Any resemblance of or similarity to real people, systems or
+companies would be accidental.
+
+Sorry to disappoint.
+
+???
+Before we start, audience must understand that even though our experience is
+based on real life projects / situations, all examples presented are
+fictituous.
+
+---
+
+# Scope
+
+- Scaling / Scalability?
+
+???
+Scaling can mean many things / involve many disciplines: Team structure /
+growth, organisational setup, which hardware to choose
+
+--
+- Keeping a transactional system with massive growth afloat operationally
+
+???
+We'll cover just a small fraction of all this (actually based on our
+experience), coming into a situation that has some pressure and unhappiness
+already.
+
+--
+- Technical aspects of scaling
+
+???
+And as we are software engineers / architects, we'll cover technical aspects,
+mainly. But, as may become clear, the greatest technology might be useless if
+applied in the wrong place... thus it's never about technology only.
 
 ---
 
@@ -35,21 +84,163 @@ Agenda
 
 ---
 
-Know your metrics
+class: center, middle
+
+Know your Metrics
 =================
 
 ---
 
-This is how we roll
+layout: true
+
+# Metrics
+
+---
+
+## Why Metrics?
+
+--
+
+What Matters Actually?
+
+--
+
+Happiness? Happy customers? Happy stakeholders?
+
+???
+Complex systems (like transaction processing systems) are complex... and have
+many stakeholders. If the system breaks under load, everybody will be unhappy
+(except for maybe competitors).
+
+--
+
+Don't make me wait!
+
+???
+Many things influence happiness of our stakeholders, but from an operational /
+scaling / growth perspective, having to wait (or timeout with an error) is
+BAAAAD.
+
+---
+
+## Is anybody waiting?
+
+--
+
+How do we know?
+
+--
+
+Metrics?
+
+???
+Interaction: What metrics? Who in the audience has metrics? (Probably the majority won't have any / won't know)
+Yes, there are always metrics of sorts...
+
+--
+
+Logs?
+
+???
+Let's check log files
+
+---
+
+This is how we roll (Demo)
 -------------------
 
 ???
 This slide is about the log rolling demo
+Show logs of a fictitious server, including response times: Some may look okay,
+others not, maybe we see some errors (stack traces) as well. All in all, it
+seems the logs contain the information we need.
+
+Now show logs of a server with much higher requests per second. Imagine 20 MB
+of logs per second. And it's a clustered environment, so 20MB per second times
+number of hosts...
+
+Tools that aggregate data from log files might help, there are even open source
+one's that do that, e.g. "logstash" ... good idea to use!
+
+But... does it help with metrics? Let's see... we can most likely get the
+*average response time* via such a tool.
+
+(the fictituous server can maybe show the average response time on a uri?)
+
+...
 
 ---
 
-Know your system
+# The Forest for the Trees
+
+We need meaningful metrics
+
+--
+
+- Average response time?
+
+???
+If the average response time is *good enough*, then everybody should be happy.
+
+But the average becomes meaningless over time: If something started going wrong
+(and users started screaming) 2 minutes ago, the average response time won't
+indicate anything bad, until poor performance affects the average (of maybe a
+very long time).
+
+--
+
+Example: Since the last restart of the server 97267 seconds ago, we received
+1166409 requests, and in the average a request took 863ms.
+
+???
+Conclusion: we need recency! What was the response time *in the last
+minute(s)*?
+
+--
+
+We need *recency*.
+
+???
+But there is another issue, consider this example:
+
+--
+
+*Average* response time is 185ms. Sounds acceptable!
+
+--
+
+... Out of 1000 requests, 980 of them took 25ms, and 20 took 8000ms.
+
+???
+Those 20 requests are an issue! And just with an average, we won't see that.
+Solution: percentiles
+
+--
+
+We need *percentiles*.
+
+---
+
+# Recency and Percentiles
+
+- reservoir sampling
+- forward decaying priority sampling
+
+... to be continued
+
+---
+
+layout: false
+class: center, middle
+
+Know your System
 ================
+
+---
+
+layout: true
+
+# Know your System
 
 ---
 
