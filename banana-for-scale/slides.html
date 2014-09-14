@@ -21,14 +21,13 @@
 
 class: center, middle
 
-Banana for Scale
-================
+# Banana for Scale
 
 Some lessons learnt, and why bananas may not help.
 
-By [Albert de Jongh](https://www.linkedin.com/in/albertdejongh) and [Chris Oloff](http://twitter.com/chrisoloff),
-prepared for SPIN, 17th September 2014
+[Albert de Jongh](https://www.linkedin.com/in/albertdejongh) and [Chris Oloff](http://twitter.com/chrisoloff)
 
+SPIN, 17th September 2014
 
 ---
 
@@ -75,8 +74,7 @@ applied in the wrong place... thus it's never about technology only.
 
 ---
 
-Agenda
-======
+# Some kind of outline
 
 1. Know your metrics
 2. Know your system
@@ -86,8 +84,7 @@ Agenda
 
 class: center, middle
 
-Know your Metrics
-=================
+# Know your Metrics
 
 ---
 
@@ -146,8 +143,7 @@ Let's check log files
 
 ---
 
-This is how we roll (Demo)
--------------------
+## This is how we roll (Demo)
 
 ???
 This slide is about the log rolling demo
@@ -160,7 +156,7 @@ of logs per second. And it's a clustered environment, so 20MB per second times
 number of hosts...
 
 Tools that aggregate data from log files might help, there are even open source
-one's that do that, e.g. "logstash" ... good idea to use!
+one's that do that, e.g. "logstash" and http://www.elasticsearch.org/overview/kibana/ ... good idea to use!
 
 But... does it help with metrics? Let's see... we can most likely get the
 *average response time* via such a tool.
@@ -171,7 +167,7 @@ But... does it help with metrics? Let's see... we can most likely get the
 
 ---
 
-# The Forest for the Trees
+## The Forest for the Trees
 
 We need meaningful metrics
 
@@ -221,7 +217,7 @@ We need *percentiles*.
 
 ---
 
-# Recency and Percentiles
+## Recency and Percentiles
 
 - reservoir sampling
 - forward decaying priority sampling
