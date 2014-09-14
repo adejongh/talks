@@ -27,7 +27,7 @@ Some lessons learnt, and why bananas may not help.
 
 [Albert de Jongh](https://www.linkedin.com/in/albertdejongh) and [Chris Oloff](http://twitter.com/chrisoloff)
 
-SPIN, 17th September 2014
+SPIN, 17 September 2014
 
 ---
 
@@ -229,8 +229,7 @@ We need *percentiles*.
 layout: false
 class: center, middle
 
-Know your System
-================
+# Know your System
 
 ---
 
@@ -240,13 +239,109 @@ layout: true
 
 ---
 
-Let's monitor Glassfish
------------------------
+## Please make it go faster!
+
+--
+
+- HTTP connection queue
+--
+
+- HTTP thread pools
+--
+
+- OS TCP/IP stack 
+--
+
+- Camel thread pools
+--
+
+- JDBC connection pools
+--
+
+- MDB pool size
+--
+
+- Bean caches
+--
+
+- Hibernate caches
+--
+
+- HTTP client pool size
+--
+
+- Message broker
+--
+
+- Database
+--
+
+- Heap sizes
+--
+
+- Garbage collection
+--
+
+- JVM flags
 
 ---
 
-Why do I have an identity crisis?
----------------------------------
+## Glassfish monitoring
+
+???
+Example of Glassfish monitoring levels all set to LOW, and poor performance
+
+Transaction monitoring is synchronizing on one counter to count transactions
+
+--
+
+Everyone is waiting
+
+```java
+"p: thread-pool-1; w: 179" daemon prio=3 tid=0x00000000014c7000 nid=0x58b1 
+waiting for monitor entry [0xfffffd7dff2f0000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+        at java.util.Vector.addElement(Vector.java:572)
+        - waiting to lock <0xfffffd7e20b52080> (a java.util.Vector)
+        at com.sun.enterprise.distributedtx.J2EETransactionManagerImpl
+             .begin(J2EETransactionManagerImpl.java:959)
+        ...
+```
+---
+
+## Glassfish monitoring
+
+One little vector
+
+```java
+"p: thread-pool-1; w: 174" daemon prio=3 tid=0x000000000ae81800 nid=0x58ab 
+runnable [0xfffffd7dff9f8000]
+   java.lang.Thread.State: RUNNABLE
+        at java.util.Vector.indexOf(Vector.java:361)
+        - locked <0xfffffd7e20b52080> (a java.util.Vector)
+        at java.util.Vector.indexOf(Vector.java:335)
+        at java.util.Vector.removeElement(Vector.java:594)
+        - locked <0xfffffd7e20b52080> (a java.util.Vector)
+        at java.util.Vector.remove(Vector.java:745)
+        at com.sun.enterprise.distributedtx.J2EETransactionManagerImpl
+             .monitorTxCompleted(J2EETransactionManagerImpl.java:1384)
+```
+
+---
+
+## Bourne identity
+
+???
+E.g. JBPM integer ids
+
+---
+
+## Garbage collection is not free
+
+???
+High memory churn
+
+
 
     </textarea>
     <script src="http://gnab.github.io/remark/downloads/remark-latest.min.js" type="text/javascript">
