@@ -325,22 +325,79 @@ runnable [0xfffffd7dff9f8000]
         at java.util.Vector.remove(Vector.java:745)
         at com.sun.enterprise.distributedtx.J2EETransactionManagerImpl
              .monitorTxCompleted(J2EETransactionManagerImpl.java:1384)
+        ...
 ```
 
 ---
 
-## Bourne identity
+## Identity
 
 ???
 E.g. JBPM integer ids
 
 ---
 
-## Garbage collection is not free
+## Garbage collection
 
 ???
 High memory churn
 
+Examples of how long a GC takes with a large heap
+
+---
+
+## Virtualization
+
+--
+
+- What is really real?
+--
+
+- How much is 80 % of a cloud?
+
+---
+
+## Glassfish transaction journal
+
+---
+
+## Nagios monitoring
+
+???
+File handles running out on a local virtual machine attach
+
+---
+
+## Message queues
+
+???
+Looking at messages that are in flight - still on queue while not committed
+
+Examples of where messages are pre-delivered
+
+---
+
+## Cheap tools
+
+--
+
+Thread dumps - the poor man's production profiler
+
+--
+
+Print the garbage collection stats
+
+--
+
+Be proactive - look at the system when it is busy
+
+--
+
+Replaying?
+
+--
+
+Centralized view of everything (logs, errors, metrics)
 
 
     </textarea>
