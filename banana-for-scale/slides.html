@@ -334,12 +334,54 @@ runnable [0xfffffd7dff9f8000]
 
 ---
 
-## Identity
+## Lessons
+
+What exactly does LOW mean?
+
+--
+
+At high speeds wind resistance counts!
+
+---
 
 ![id book](images/id.jpg)
 
 ???
 E.g. JBPM integer ids
+
+---
+
+## Identity
+
+Integer maximum value 2^31-1 = 2147483647
+
+--
+
+At 10 TPS:  59652 hours (6.8 years)
+
+--
+
+At 200 TPS:  2982 hours (124 days)
+
+--
+
+Whereas maximum value of a long is 9223372036854775807L
+
+--
+
+At 200 TPS that will last... 1462356043 years
+
+(safely much longer than you will have to support it!)
+
+---
+
+## Lessons
+
+They grow up so quickly
+
+--
+
+Don't blindly trust third-party libraries
 
 ---
 
@@ -353,13 +395,33 @@ Examples of how long a GC takes with a large heap
 
 ## Garbage collection
 
-* Heap too small
+Heap too small
+
 --
 
-* Large heap
+Large heap
+
 --
 
-* Swap to disk
+Swap to disk
+
+--
+
+Collector algorithm
+
+---
+
+## Lessons in garbage
+
+Understand your application's eating patterns
+
+--
+
+Experiment with collectors and GC settings
+
+--
+
+Analyze!
 
 ---
 
@@ -369,12 +431,29 @@ Examples of how long a GC takes with a large heap
 
 ## Virtualization
 
+23:02:50 up 8 days, 11:01,  6 users,  load average: 1.01, 1.00, 0.81
+
 --
 
-- What is really real?
+What does those numbers mean when the CPU is virtual?
+
 --
 
-- How much is 80 % of a cloud?
+And, if the CPU allocation is dynamically scaled?
+
+---
+
+## Virtualization lessons
+
+Really really understand your virtualization technology
+
+--
+
+Do not use dynamically scaled resources (unless you're very clever)
+
+--
+
+Unless of course, you have unlimited hardware ;-)
 
 ---
 
@@ -389,12 +468,17 @@ File handles running out on a local virtual machine attach
 
 ---
 
-## Message queues
+![queue](images/queue.jpg)
+
 
 ???
 Looking at messages that are in flight - still on queue while not committed
 
 Examples of where messages are pre-delivered
+
+---
+
+## Message queues
 
 ---
 
