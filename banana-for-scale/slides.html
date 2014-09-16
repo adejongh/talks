@@ -241,6 +241,14 @@ layout: true
 
 ![faster](images/fasterbanjo.jpg)
 
+???
+
+At some stage:  you're going to get the call that the monster is slow and or unstable
+
+What do you do then?
+
+There are many things you can tweak in a big system.  I've listed some that came to mind.
+
 ---
 
 ## Paddle faster
@@ -291,15 +299,20 @@ layout: true
 ![monitoring wall](images/monitoring.jpg)
 
 ???
-Example of Glassfish monitoring levels all set to LOW, and poor performance
+Let's go through some examples of things that went horribly wrong, and see if we can learn something from them...
 
-Transaction monitoring is synchronizing on one counter to count transactions
+We were trying to get everyone to correctly setup their monitoring software.
+
+Some well-meaning soul thought setting the Glassfish transaction monitoring to LOW will help.  
+And it does - mostly - how else can we get data for our metrics?
+
+What do you think happened?
 
 ---
 
 ## Glassfish monitoring
 
-Everyone is waiting
+Hmmm?
 
 ```java
 "p: thread-pool-1; w: 179" daemon prio=3 tid=0x00000000014c7000 nid=0x58b1 
@@ -311,6 +324,10 @@ waiting for monitor entry [0xfffffd7dff2f0000]
              .begin(J2EETransactionManagerImpl.java:959)
         ...
 ```
+
+???
+Almost all threads that had anything to do with transactions were blocked
+
 ---
 
 ## Glassfish monitoring
@@ -332,11 +349,18 @@ runnable [0xfffffd7dff9f8000]
         ...
 ```
 
+???
+Transaction monitoring was synchronizing on one counter to count transactions
+
 ---
 
 ## Lessons
 
 What exactly does LOW mean?
+
+--
+
+Complexity comes at a price
 
 --
 
@@ -347,11 +371,19 @@ At high speeds wind resistance counts!
 ![id book](images/id.jpg)
 
 ???
-E.g. JBPM integer ids
+An identity crisis is quite a serious problem.
+
+We started seeing database constraint violations in the logs, and they were getting more and more frequent.
+
+It was quite strange since the system was using Hibernate for persistence, and a sequence based approach for the ids.
+
+It is not possible for the ids to clash.
+
+Or is it?
 
 ---
 
-## Identity
+## Identity theft
 
 Integer maximum value 2^31-1 = 2147483647
 
@@ -362,6 +394,17 @@ At 10 TPS:  59652 hours (6.8 years)
 --
 
 At 200 TPS:  2982 hours (124 days)
+
+???
+Strictly speaking you have twice as long - if the integer wraps into negative.  And then the fun starts!
+
+You can guess what happened here...  The third party library was using integers for its id field.
+
+A single sequence was used across a few different tables.
+
+Thus there were "holes" in the range of ids in the different tables.  
+
+And, fortunately, only one of the tables really kept
 
 --
 
@@ -388,50 +431,78 @@ Don't blindly trust third-party libraries
 ![garbage](images/garbageduplo.jpg)
 
 ???
-High memory churn
+This is a favourite of mine - good old garbage collection in Java
 
-Examples of how long a GC takes with a large heap
+How many people have tried tuning garbage collectors in anger?
+
+How many of you actually made it better?
+
+GC is especially hard to tune correctly if you have app with high memory churn
+
 ---
 
 ## Garbage collection
 
 Heap too small
 
+???
+Very frequent collections - stop-the-world type
+
 --
 
 Large heap
+
+???
+Deferring the obvious...  and now you have a huge stop-the-world pause
 
 --
 
 Swap to disk
 
+???
+Even worse - if you're oversubscribing memory in the system it may start swapping during GC
+
+Then it becomes really really slow
+
 --
 
-Collector algorithm
+Collector implementation and parameters
+
+???
+Change one thing at a time, and study the results
 
 ---
 
-## Lessons in garbage
+## Lessons in garbage collecting
 
-Understand your application's eating patterns
-
---
-
-Experiment with collectors and GC settings
+Understand your application's eating patterns.  Maybe send it on a diet too.
 
 --
 
-Analyze!
+Experiment with collectors and GC settings in a safe environment
+
+--
+
+Have verbose gc logs switched one (with some other switches) - and analyze it
+
 
 ---
 
 ![chicken](images/chicken-virtualization.jpg)
+
+???
+Apparently it is quite hard to find a picture that illustrates virtualization
 
 ---
 
 ## Virtualization
 
 23:02:50 up 8 days, 11:01,  6 users,  load average: 1.01, 1.00, 0.81
+
+???
+What does those numbers mean?
+
+Important to look at them in conjunction with how CPUs the system has.
 
 --
 
@@ -449,7 +520,7 @@ Really really understand your virtualization technology
 
 --
 
-Do not use dynamically scaled resources (unless you're very clever)
+Do not use dynamically scaled resources
 
 --
 
@@ -457,14 +528,91 @@ Unless of course, you have unlimited hardware ;-)
 
 ---
 
-## Glassfish transaction journal
+![retro drive](images/retrodrive.jpg)
+
+"...at least ten times better than floppies..."
+
+???
+Another strange one courtesy of Glassfish...  Why do we have so many Glassfish examples?
+
+The system mysteriously started slowing down more and more
+
+All the normal culprits were investigated - could not really find the cause
+
+Eventually some thread dumps were produced
 
 ---
 
-## Nagios monitoring
+## Glassfish transaction journal
+
+```java
+"p: thread-pool-1; w: 273" daemon prio=3 tid=0x000000000cc35000 nid=0x7e3c1 
+waiting for monitor entry [0xfffffd7fdbd73000]
+  java.lang.Thread.State: BLOCKED (on object monitor)
+  at com.sun.jts.CosTransactions.LogFile.write(LogFile.java:157)
+  waiting to lock <0xfffffd7e810a6ff8> (a com.sun.jts.CosTransactions.LogFile)
+  at com.sun.jts.CosTransactions.CoordinatorLog.formatLogRecords(CoordinatorLog.java:1082)
+  locked <0xfffffd7e7b645ef8> (a com.sun.jts.CosTransactions.CoordinatorLog)
+  at com.sun.jts.CosTransactions.CoordinatorLog.write(CoordinatorLog.java:535)
+  at com.sun.jts.CosTransactions.TransactionState.setState(TransactionState.java:780)
+  at com.sun.jts.CosTransactions.TopCoordinator.commit(TopCoordinator.java:2134)
+```
 
 ???
-File handles running out on a local virtual machine attach
+
+Anyone guess what went wrong here?
+
+The filesystem where this transaction log was located was shared with the application's log files
+
+And...  they were running through a lot of logs (remember Chris' demo?)
+
+It was actually holding up the transaction logs to be committed to disk
+
+---
+
+## Lessons
+
+Even if you don't think your app is disk bound it may be
+
+--
+
+The operations team can't guess how to lay out the filesystems
+
+---
+
+![file handles](images/filehandle.jpg)
+
+???
+This time the call was more serious
+
+The system just stopped working
+
+---
+
+## Too many open files
+
+```java
+java.io.FileNotFoundException: .../imq/instances/imqbroker/etc/passwd (Too many open files)
+  at java.io.FileInputStream.open(Native Method)
+  at java.io.FileInputStream.<init>(FileInputStream.java:106)
+  ...
+```
+
+???
+
+We found this log fragment in the message broker log file
+
+After some scratching around we listed all the open files to see which process was holding on to the handles
+
+It was the Java virtual machine "local attach" mechanism - as in when using tools like jconsole and jvisualvm
+
+We were embarrased to find that it was our JMX metrics collector running on the broker that triggered a bug in the JVM
+
+---
+
+## Lessons?
+
+Soak test all parts of your application - even the monitoring bits
 
 ---
 
@@ -472,13 +620,32 @@ File handles running out on a local virtual machine attach
 
 
 ???
-Looking at messages that are in flight - still on queue while not committed
 
-Examples of where messages are pre-delivered
+Message queues are really simple things, yes?
+
+What exactly does the inflight message count tell you?
+
+Both messages that still need to be consumed AND messages that have been picked up but not committed
+
+Recently had this very strange problem where messages would look as if they are stuck on a queue, but not all the consumers would be busy
+
+Had us flummoxed for a while - until we realized that you can set up a "consumer flow limit", or prefetch message count
+
+This is the number of messages that will be predelivered to a consumer in a batch
+
+In this case the few busy consumers had prefetched all the messages off the queue - and the other consumers were idle
+
+However the first message in the prefetched list was poisonous, and the consumer dealt with it badly
+
+It held up all the messages in the prefetched list - and they were stuck forever
+
+A bit like standing in the queue at Pick 'n Pay and the person right at the front has an item without a price
 
 ---
 
-## Message queues
+## Lessons
+
+Know your system!
 
 ---
 
