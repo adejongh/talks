@@ -698,6 +698,94 @@ Replaying?
 
 Centralized view of everything (logs, errors, metrics)
 
+---
+
+layout: false
+class: center, middle
+
+# Change One Thing at a Time
+
+---
+
+layout: true
+
+# Change One Thing at a Time
+
+---
+
+Simple rule
+
+???
+As last item on the agenda, something more relaxing.
+
+--
+
+... we broke it.
+
+???
+It sounds so simple... why is it worth mentioning?
+Let's look at an (again purely fictituous) example.
+
+---
+
+> "The bean pool is at its limit under load, let's double it. It will certainly
+reduce response times in the average."
+
+--
+
+> "We can certainly reduce garbage collection waits by adding 50% more GC
+threads. As there's enough CPU, there is no risk here!"
+
+--
+
+We make the changes together (no time to loose! Just one maintenance window a
+day!)...
+
+--
+
+and response times degrade even more. :(
+
+--
+
+All we can do is an emergency rollback.
+
+--
+
+And we are as smart (or dumb) as before.
+
+???
+The tragic is: We want to make progress, be helpful, and we are pretty damn
+sure that the two changes are low risk and unrelated.
+
+Also: Often we cannot make changes any time in production, we have to wait for
+a maintenance window, adhere to a strict process, thus "batching up" production
+changes seems useful!
+
+---
+
+Cause and Effect...
+
+--
+
+are often not what we expect.
+
+--
+
+Assumptions is the mother of all ____ups.
+
+---
+
+layout: false
+# Some kind of outline
+
+1. Know your metrics
+2. Know your system
+3. Change one thing at a time
+
+---
+
+class: center, middle
+# Questions?
 
     </textarea>
     <!-- online URL is http://gnab.github.io/remark/downloads/remark-latest.min.js -->
