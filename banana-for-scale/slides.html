@@ -319,7 +319,7 @@ Hmmm?
 waiting for monitor entry [0xfffffd7dff2f0000]
    java.lang.Thread.State: BLOCKED (on object monitor)
         at java.util.Vector.addElement(Vector.java:572)
-        - waiting to lock <0xfffffd7e20b52080> (a java.util.Vector)
+*        - waiting to lock <0xfffffd7e20b52080> (a java.util.Vector)
         at com.sun.enterprise.distributedtx.J2EETransactionManagerImpl
              .begin(J2EETransactionManagerImpl.java:959)
         ...
@@ -339,10 +339,10 @@ For one vector
 runnable [0xfffffd7dff9f8000]
    java.lang.Thread.State: RUNNABLE
         at java.util.Vector.indexOf(Vector.java:361)
-        - locked <0xfffffd7e20b52080> (a java.util.Vector)
+*        - locked <0xfffffd7e20b52080> (a java.util.Vector)
         at java.util.Vector.indexOf(Vector.java:335)
         at java.util.Vector.removeElement(Vector.java:594)
-        - locked <0xfffffd7e20b52080> (a java.util.Vector)
+*        - locked <0xfffffd7e20b52080> (a java.util.Vector)
         at java.util.Vector.remove(Vector.java:745)
         at com.sun.enterprise.distributedtx.J2EETransactionManagerImpl
              .monitorTxCompleted(J2EETransactionManagerImpl.java:1384)
@@ -550,7 +550,7 @@ Eventually some thread dumps were produced
 waiting for monitor entry [0xfffffd7fdbd73000]
   java.lang.Thread.State: BLOCKED (on object monitor)
   at com.sun.jts.CosTransactions.LogFile.write(LogFile.java:157)
-  waiting to lock <0xfffffd7e810a6ff8> (a com.sun.jts.CosTransactions.LogFile)
+*  waiting to lock <0xfffffd7e810a6ff8> (a com.sun.jts.CosTransactions.LogFile)
   at com.sun.jts.CosTransactions.CoordinatorLog.formatLogRecords(CoordinatorLog.java:1082)
   locked <0xfffffd7e7b645ef8> (a com.sun.jts.CosTransactions.CoordinatorLog)
   at com.sun.jts.CosTransactions.CoordinatorLog.write(CoordinatorLog.java:535)
