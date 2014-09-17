@@ -333,7 +333,7 @@ We were trying to get everyone to correctly setup their monitoring software.
 Some well-meaning soul thought setting the Glassfish transaction monitoring to LOW will help.  
 And it does - mostly - how else can we get data for our metrics?
 
-What do you think happened?
+**What do you think happened?**
 
 ---
 
@@ -410,9 +410,9 @@ Sequence based approach for the ids.
 
 It is not possible for the ids to clash.
 
-Or is it?
+**Or is it?**
 
-Can you guess what happened here...  
+**Can you guess what happened here... **
 
 Using integers for its id field.
 
@@ -466,9 +466,9 @@ Don't blindly trust third-party libraries
 ???
 This is a favourite of mine - good old garbage collection in Java
 
-How many people have tried tuning garbage collectors in anger?
+**How many people have tried tuning garbage collectors in anger?**
 
-How many of you actually made it better?
+**How many of you actually made it better?**
 
 GC is especially hard to tune correctly if you have app with high memory churn
 
@@ -533,13 +533,13 @@ Hard to find a picture that illustrates virtualization
 23:02:50 up 8 days, 11:01,  6 users,  load average: 1.01, 1.00, 0.81
 
 ???
-What does those numbers mean?
+**What do those numbers mean?**
 
 Know how many CPUs the system has
 
 --
 
-What does those numbers mean when the CPU is virtual?
+What does it mean when the CPU is virtual?
 
 --
 
@@ -591,7 +591,7 @@ waiting for monitor entry [0xfffffd7fdbd73000]
 
 ???
 
-Anyone guess what went wrong here?
+**Anyone guess what went wrong here?**
 
 Filesystem of transaction log shared with application's log files
 
@@ -654,7 +654,7 @@ Soak test all parts of your application - even the monitoring bits
 
 Message queues are really simple things, yes?
 
-What exactly does the inflight message count tell you?
+**What exactly does the queue length tell you?**
 
 Both messages that still need to be consumed AND messages that have been picked up but not committed
 
