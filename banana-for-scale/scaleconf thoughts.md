@@ -1,3 +1,8 @@
+
+Things to check out before-hand
+* thread states
+
+
 Paddle faster
 	List of things that one can tweak
 
