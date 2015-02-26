@@ -16,6 +16,17 @@
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
       .remark-slide-content h1 { font-size: 75px; }
       .remark-slide-content { font-size: 20px; }
+
+      .title-slide {
+        background: #272822;
+        color: #777872;
+        text-shadow: 0 0 20px #333;
+      }
+      .title-slide h1 {
+        color: #f3f3f3;
+        font-size: 150px;
+      }
+       
     </style>
   </head>
   <body>
@@ -275,20 +286,14 @@ We'll see why this is so important later.
 
 ---
 
-layout: false
-class: center, middle
-
-# Know your System
-
----
-
 layout: true
 
 # Know your System
 
 ---
 
-![faster](images/fasterbanjo.jpg)
+class: title-slide, center, middle
+background-image: url(images/dials.jpg)
 
 ???
 
@@ -300,7 +305,7 @@ There are many things you can tweak in a big system.  I've listed some that came
 
 ---
 
-## Paddle faster
+## Tune it!
 
 * HTTP connection queue
 --
@@ -332,13 +337,13 @@ There are many things you can tweak in a big system.  I've listed some that came
 * Message broker
 --
 
-* Database
+* Database magic
 --
 
 * Heap sizes
 --
 
-* Garbage collection
+* Garbage collection algorithm
 --
 
 * JVM flags
@@ -818,7 +823,10 @@ class: center, middle
     <script src="remark-latest.min.js" type="text/javascript">
     </script>
     <script type="text/javascript">
-      var slideshow = remark.create( { slideNumberFormat: '' } );
+      var slideshow = remark.create({
+        ratio: '16:9',
+        slideNumberFormat: '' 
+    } );
     </script>
   </body>
 </html>
