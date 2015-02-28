@@ -99,11 +99,14 @@ applied in the wrong place... thus it's never about technology only.
 
 ---
 
-class: center, middle
+layout: false
+class: title-slide, center, middle
 
 # Know your Metrics
 
---
+---
+
+# Why Metrics?
 
 > A banana added for scale or used as a system of measurement is so much easier
 and less snobby than inches, feet or even the metric system.
@@ -112,13 +115,7 @@ Imgur user HowToBeADad on http://imgur.com/gallery/Jrmlt
 
 ---
 
-layout: true
-
-# Metrics
-
----
-
-## Why Metrics?
+# Why Metrics?
 
 --
 
@@ -129,9 +126,21 @@ What Matters Actually?
 Happiness? Happy customers? Happy stakeholders?
 
 ???
+What's the link between happy stakeholders and metrics?
+
+The link is: complex systems
+
 Complex systems (like transaction processing systems) are complex... and have
-many stakeholders. If the system breaks under load, everybody will be unhappy
+many stakeholders.
+
+Complex systems struggle under load, or even break.
+
+If the system breaks or is slow, everybody will be unhappy
 (except for maybe competitors).
+
+--
+
+Don't break!
 
 --
 
@@ -165,62 +174,47 @@ Logs?
 ???
 Let's check log files
 
+Let's check a log file of a transaction processing system.
+
+(app, master branch 20 req per second)
+(look at logs)
+
+Apperently we can buy bananas here via an HTTP POST.
+
+And there are metrics! For each request we see how long it took.
+
+Are we done? Is anybody waiting?
+
+Closer look: Many response times look good, below 200ms.
+
+First idea: Determine the average response time, then we can compare if
+response time is getting better or worse.
+
+(switch branch to measure-averages)
+
+We can now get the average:
+
+curl -s http://localhost:3080/averageMetrics | json
+
+The average is okay, but the maxResponseTime indicates that at least one
+request was served poorly. Or many? How many?
+
 ---
 
-## This is how we roll (Demo)
+# Don't be Just Average
 
-???
-This slide is about the log rolling demo
-Show logs of a fictitious server, including response times: Some may look okay,
-others not, maybe we see some errors (stack traces) as well. All in all, it
-seems the logs contain the information we need.
-
-Now show logs of a server with much higher requests per second. Imagine 20 MB
-of logs per second. And it's a clustered environment, so 20MB per second times
-number of hosts...
-
-Tools that aggregate data from log files might help, there are even open source
-one's that do that, e.g. "logstash" and http://www.elasticsearch.org/overview/kibana/ ... good idea to use!
-
-But... does it help with metrics? Let's see... we can most likely get the
-*average response time* via such a tool.
-
-(the fictituous server can maybe show the average response time on a uri?)
-
-...
-
----
-
-## The Forest for the Trees
-
-We need meaningful metrics
-
---
-
-- Average response time?
-
-???
-If the average response time is *good enough*, then everybody should be happy.
-
-But the average becomes meaningless over time: If something started going wrong
-(and users started screaming) 2 minutes ago, the average response time won't
-indicate anything bad, until poor performance affects the average (of maybe a
-very long time).
-
---
-
-Example: Since the last restart of the server 97267 seconds ago, we received
+Since the last restart of the server 97267 seconds ago, we received
 1166409 requests, and in the average a request took 863ms.
 
 ???
-Conclusion: we need recency! What was the response time *in the last
+Problem: the average becomes meaningless over time: If something started going
+wrong (and users started screaming) 2 minutes ago, the average response time
+won't indicate anything bad, until poor performance affects the average (of
+maybe a very long time).
+
+Conclusion: We need recency! What was the response time *in the last
 minute(s)*?
 
---
-
-We need *recency*.
-
-???
 But there is another issue, consider this example:
 
 --
@@ -232,7 +226,10 @@ But there is another issue, consider this example:
 ... Out of 1000 requests, 980 of them took 25ms, and 20 took 8000ms.
 
 ???
-Those 20 requests are an issue! And just with an average, we won't see that.
+The average is: (980 * 25 + 20 * 8000) / 1000 ... better than 200ms in the average.
+
+20 requests are an issue! And just with an average, we won't see that.
+
 Solution: percentiles
 
 --
@@ -243,12 +240,27 @@ We need *percentiles*.
 
 ![percentiles](images/percentile-80.gif)
 
+???
+
+What are percentiles? Think of 100 people and their body height, make them
+stand next to each other, sorted by height. The height of the 80th from the
+left marks the 80th percentile: 80% of people have equal or less hight to that guy.
+
+Transferred to response times: If the 95th percentile is 600ms, then 95 percent
+of requests are responded with in 600ms or less. (And the remaining 5% in 600ms
+or more.)
+
+(recency etc, as per presentation)
+
 ---
 
-## Recency and Percentiles
+# Recency and Percentiles
 
 - reservoir sampling
 - forward decaying priority sampling
+
+???
+This gets complicated quite quickly.
 
 --
 
@@ -268,21 +280,57 @@ Highly recommended: [Metrics, Metrics Everywhere](https://www.youtube.com/watch?
 Metrics, Metrics Everywhere: It's about linking code with business value (and
 explaining important aspects of metrics in detail)
 
+Let's look at that.
+
+(app, metrics branch)
+
+curl -s http://localhost:3001/metrics | json
+
+---
+
+# Metrics?
+
+What have we got now?
+
+- Recency
+- Percentiles
+
+So what?
+
+--
+
+- Now we can compare
+
+???
+
+Side Note (TODO: where?)
+Tools that aggregate data from log files might help, there are even open source
+one's that do that, e.g. "logstash" and http://www.elasticsearch.org/overview/kibana/ ... good idea to use!
+
+But... does it help with metrics? Let's see... we can most likely get the
+*average response time* via such a tool.
+
+(the fictituous server can maybe show the average response time on a uri?)
+
 ---
 
 background-image: url(images/graph-1.png)
 background-size: 25%
 
---
-
-Record request rates and response times over time
-
---
-
-... now you can compare
-
 ???
-We'll see why this is so important later.
+This graph shows the request rate over time, in #requests per second, in an
+online transaction processing system.
+
+... so what?
+
+Record request rates (TPS) and response times (percentiles) over time
+
+... make meaningful observations. Example: response times (95th percentile)
+degraded from 700ms to 1200mm, while the request rate was the same as
+previously. Now we can conclude: It's not simply higher demand that causes decay.
+
+... we can also compare days and weeks (assuming that we record those metrics
+appropriately). We'll see why this is so important later.
 
 ---
 
