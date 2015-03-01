@@ -26,6 +26,9 @@
         color: #f3f3f3;
         font-size: 150px;
       }
+      .title-slide h2 {
+        font-size: 100px;
+      }
        
     </style>
   </head>
@@ -35,7 +38,7 @@
 
 background-image: url(images/Banana-Single.jpg)
 
-class: center, top, title-slide
+class: center, top
 
 # Banana for Scale
 
@@ -341,16 +344,13 @@ background-image: url(images/dials.jpg)
 # Know your System
 
 ???
+Chris and myself have way too often received phone calls about big systems that are very slow or unstable - usually late on a Saturday just as my steak is ready...
 
-At some stage you're going to get the call that the monster is slow and or unstable
-
-What can you do?
-
-There are many things you can tweak in a big system.  I've listed some that came to mind.
+If you're in a rush to fix things you're often tempted to start tuning away all those problems.
 
 ---
 
-## So many shiny knobs to turn
+## Where do you start?
 
 * HTTP connection queue
 --
@@ -400,6 +400,8 @@ class: title-slide, center, middle
 background-image: url(images/plane.jpg)
 
 ???
+This part of our talk is about how important it is for you to really understand your system before you are tempted to start fiddling with all the shiny knobs to make it go faster.
+
 Let's go through some examples of things that went horribly wrong, and see if we can learn something from them...
 
 This is really a therapy session for us to work through some of the things we cannot unsee
@@ -420,7 +422,7 @@ And it does - mostly - how else can we get data for our metrics?
 waiting for monitor entry [0xfffffd7dff2f0000]
    java.lang.Thread.State: BLOCKED (on object monitor)
         at java.util.Vector.addElement(Vector.java:572)
-*        - waiting to lock <0xfffffd7e20b52080> (a java.util.Vector)
+        - waiting to lock <0xfffffd7e20b52080> (a java.util.Vector)
         at com.sun.enterprise.distributedtx.J2EETransactionManagerImpl
              .begin(J2EETransactionManagerImpl.java:959)
         ...
@@ -465,12 +467,13 @@ Transaction monitoring was synchronizing on one counter to count transactions
 
 ---
 
-![id book](images/id.jpg)
+class: title-slide, middle, center
+
+# tx.commit, please?
+## computer says no
 
 ???
-Someone with an identity crisis...  Acute accent to be added on the "i"
-
-Database constraint violations in the logs, and they were getting more and more frequent.
+Client complained about database constraint violations in the logs, and they were getting more and more frequent.
 
 It was quite strange since the system was using Hibernate for persistence
 
@@ -478,27 +481,22 @@ Hibernate was using sequences to create the ids
 
 Therefore it should not possible for the ids to clash.
 
-**Pause**
-
-Third party component was using integers for its id field
-
-Single sequence used across different tables
-
-Therefore "holes" in the range of ids in the different tables  
-
 ---
 
 ## Integers
 
 Integer maximum value 2^31-1 = 2147483647
 
-Increment by 1 gives you -2147483648
-
 ???
 Let's delve into this a little bit
 
 The maximum value of 32 bit signed integer is...
 
+--
+
+Increment by 1 gives you -2147483648
+
+???
 In Java, if you increment an integer beyond its maximum value it will wrap to the negative value, and give you..
 
 --
@@ -515,9 +513,23 @@ At 200 TPS:  2982 hours (124 days)
 ???
 At 200 TPS you will destroy them in 124 days
 
+**Pause**
+
+Can you guess what happened here?
+
+Third party component was using integers for its id field
+
+Single sequence used across different tables
+
+Therefore "holes" in the range of ids in the different tables  
+
 --
 
-Maximum value of a long is 9223372036854775807
+Rather use a long, with max of 9223372036854775807
+
+???
+
+Using an integer for an id is dangerous
 
 --
 
@@ -597,7 +609,9 @@ It is very hard to find a picture on virtualization :-)
 
 ## Virtualization
 
+```
 23:02:50 up 8 days, 11:01,  6 users,  load average: 1.01, 1.00, 0.81
+```
 
 ???
 **Raise your hand if you think this is a busy system?**
@@ -620,9 +634,9 @@ Or, if the CPU allocation is dynamically scaled?
 
 ---
 
-![retro drive](images/retrodrive.jpg)
+class: title-slide
 
-"...at least ten times better than floppies..."
+background-image: url(images/cromemco.jpg)
 
 ???
 Back to a real life example
@@ -682,7 +696,7 @@ The system just stopped working
 ## File handles
 
 ```java
-java.io.FileNotFoundException: .../imq/instances/imqbroker/etc/passwd (Too many open files)
+*java.io.FileNotFoundException: .../imq/instances/imqbroker/etc/passwd (Too many open files)
   at java.io.FileInputStream.open(Native Method)
   at java.io.FileInputStream.<init>(FileInputStream.java:106)
   ...
@@ -739,9 +753,17 @@ A bit like standing in the queue at Pick 'n Pay and the person right at the fron
 
 ---
 
-## Cheap tools
+class: title-slide, center, middle
 
---
+background-image: url(images/Box-cutter.jpg)
+
+???
+
+Cheap tools at clients
+
+---
+
+## Cheap tools
 
 Thread dumps - the poor man's production profiler
 
@@ -764,7 +786,7 @@ Centralized view of everything (logs, errors, metrics)
 ---
 
 layout: false
-class: center, middle
+class: title-center, middle
 
 # Change One Thing at a Time
 
