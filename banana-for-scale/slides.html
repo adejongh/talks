@@ -13,9 +13,15 @@
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code, .remark-inline-code { 
+        font-family: 'Ubuntu Mono'; 
+        font-size: 22px;
+      }
       .remark-slide-content h1 { font-size: 75px; }
-      .remark-slide-content { font-size: 28px; }
+      .remark-slide-content { 
+        font-size: 28px;
+        padding: 1em 1em 1em 1em;
+      }
 
       .title-slide {
         background-color: #272822;
@@ -27,6 +33,7 @@
         font-size: 150px;
       }
       .title-slide h2 {
+        color: #f3f3f3;
         font-size: 100px;
       }
        
@@ -511,7 +518,7 @@ Transaction monitoring was synchronizing on one counter to count transactions
 
 class: title-slide, middle, center
 
-# tx.commit, please?
+## tx.commit, please?
 ## computer says no
 
 ???
@@ -565,13 +572,15 @@ Single sequence used across different tables
 
 Therefore "holes" in the range of ids in the different tables  
 
+Using an integer for an id is dangerous
+
 --
 
 Rather use a long, with max of 9223372036854775807
 
 ???
-
-Using an integer for an id is dangerous
+Rather use a long, with max of 
+nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred seven
 
 --
 
@@ -604,7 +613,7 @@ GC is especially hard to tune correctly if you have app with high memory churn
 
 ## Garbage collection
 
-If your heap is too small
+If your heap is too small - frequent collections, but all the time
 
 ???
 Very frequent collections of the stop-the-world type
@@ -612,6 +621,12 @@ Very frequent collections of the stop-the-world type
 --
 
 So you fix it by having a HUGE heap
+
+And it runs a **monster** stop the world collection
+
+Everything stops
+
+And people die
 
 ???
 Now you are deferring the obvious...  and now you have a huge stop-the-world pause
@@ -651,7 +666,7 @@ It is very hard to find a picture on virtualization :-)
 
 ## Virtualization
 
-```
+```bash
 23:02:50 up 8 days, 11:01,  6 users,  load average: 1.01, 1.00, 0.81
 ```
 
@@ -738,7 +753,8 @@ The system just stopped working
 ## File handles
 
 ```java
-*java.io.FileNotFoundException: .../imq/instances/imqbroker/etc/passwd (Too many open files)
+*java.io.FileNotFoundException: .../imq/instances/imqbroker/etc/passwd 
+  (Too many open files)
   at java.io.FileInputStream.open(Native Method)
   at java.io.FileInputStream.<init>(FileInputStream.java:106)
   ...
@@ -828,7 +844,7 @@ Centralized view of everything (logs, errors, metrics)
 ---
 
 layout: false
-class: title-center, middle
+class: title-slide, middle, center
 
 # Change One Thing at a Time
 
@@ -920,7 +936,7 @@ class: center, middle, title-slide
     </script>
     <script type="text/javascript">
       var slideshow = remark.create({
-        ratio: '16:9',
+        //ratio: '16:9',
         slideNumberFormat: '' 
     } );
     </script>
