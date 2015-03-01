@@ -15,7 +15,7 @@
       }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
       .remark-slide-content h1 { font-size: 75px; }
-      .remark-slide-content { font-size: 20px; }
+      .remark-slide-content { font-size: 28px; }
 
       .title-slide {
         background-color: #272822;
@@ -100,6 +100,36 @@ applied in the wrong place... thus it's never about technology only.
 2. Know your system
 3. Change one thing at a time
 
+???
+We will talk about 3 items only, but in some detail. These are our main
+lessons, or principles, we want to bring across.
+
+If you remember nothing else but those in 2 months from now, then that would be
+awesome, and we would have done a good job.
+
+- We want you to understand that metrics, meaning actually measuring your system
+is important. We feel the metrics we will present are somehow generic, and may
+be applicable in your case as well. But this might be wrong. So please don't
+copy our metrics blindly, but rather try to understand why we chose the ones we
+chose; remember the principles involved rather than the actual implementation.
+
+- We've learnt the next lesson the hard way: Chances are that you made
+technology choices *before* having to scale that do the job perfectly well, are
+a lovely abstraction, making it unnecessary for you to worry about the
+intrinsic details of (example) distributed transactions... but when your
+transaction volume hits a certain limit, stuff starts to break, and you realise
+that you know nothing about its internal mechanics. The early blessings of the
+big framework turn into its curse... and the sales reps that made you purchase
+that middleware to exactly avoid scaling problems initially... they cannot find
+you a single technical expert that knows more than you do already. Thus, you
+really should know your system.
+
+- The third items is a simple principle: If you change one thing at a time
+only, it's easy to attribute the effects to a cause, namely the single thing
+you changed. Unfortunately, we tend to break this simple rule. If, as a result
+of listening to our story, only one of you resists the temptation to change
+multiple things at a time... then we've achieved something.
+
 ---
 
 layout: false
@@ -156,7 +186,7 @@ BAAAAD.
 
 ---
 
-## Is anybody waiting?
+# Is anybody waiting?
 
 --
 
@@ -222,7 +252,11 @@ But there is another issue, consider this example:
 
 --
 
-*Average* response time is 185ms. Sounds acceptable!
+We need *recency*.
+
+--
+
+Average response time is 185ms. Sounds acceptable!
 
 --
 
@@ -317,8 +351,9 @@ But... does it help with metrics? Let's see... we can most likely get the
 
 ---
 
-background-image: url(images/graph-1.png)
-background-size: 25%
+layout: false
+class: center, middle
+background-image: url(images/graph-1.jpg)
 
 ???
 This graph shows the request rate over time, in #requests per second, in an
@@ -334,6 +369,13 @@ previously. Now we can conclude: It's not simply higher demand that causes decay
 
 ... we can also compare days and weeks (assuming that we record those metrics
 appropriately). We'll see why this is so important later.
+
+---
+
+layout: false
+class: center, middle
+
+# Know your Metrics &#10003;
 
 ---
 
