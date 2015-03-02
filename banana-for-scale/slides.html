@@ -22,7 +22,6 @@
         font-size: 28px;
         padding: 1em 1em 1em 1em;
       }
-
       .title-slide {
         background-color: #272822;
         color: #777872;
@@ -30,6 +29,10 @@
       }
       .title-slide h1 {
         color: #f3f3f3;
+        font-size: 150px;
+      }
+      .dark h1 {
+        color: #202020;
         font-size: 150px;
       }
       .title-slide h2 {
@@ -145,12 +148,11 @@ multiple things at a time... then we've achieved something.
 
 layout: false
 class: title-slide, center, middle
+background-image: url(images/know-your-metrics.jpg)
 
 # Know your Metrics
 
----
-
-# Why Metrics?
+???
 
 > A banana added for scale or used as a system of measurement is so much easier
 and less snobby than inches, feet or even the metric system.
@@ -286,7 +288,9 @@ We need *percentiles*.
 
 ---
 
-![percentiles](images/percentile-80.gif)
+class: center, middle
+
+background-image: url(images/percentile-80.gif)
 
 ???
 
@@ -294,8 +298,8 @@ What are percentiles? Think of 100 people and their body height, make them
 stand next to each other, sorted by height. The height of the 80th from the
 left marks the 80th percentile: 80% of people have equal or less hight to that guy.
 
-Transferred to response times: If the 95th percentile is 600ms, then 95 percent
-of requests are responded with in 600ms or less. (And the remaining 5% in 600ms
+Transferred to response times: If the 99th percentile is 900ms, then 99 percent
+of requests are responded with in 900ms or less. (And the remaining 1% in 900ms
 or more.)
 
 (recency etc, as per presentation)
@@ -359,6 +363,17 @@ But... does it help with metrics? Let's see... we can most likely get the
 *average response time* via such a tool.
 
 (the fictituous server can maybe show the average response time on a uri?)
+
+---
+
+layout: false
+class: center, middle
+background-image: url(images/Windflower-05237-nevit.JPG)
+
+???
+We don't have the same load all the time. There's a 24 hour cycle (people
+transact most in the morning and in the afternoon), and there are weekly,
+monthly and yearly cycles, too.
 
 ---
 
@@ -848,7 +863,8 @@ Centralized view of everything (logs, errors, metrics)
 ---
 
 layout: false
-class: title-slide, middle, center
+class: title-side, middle, center, dark
+background-image: url(images/ford-consul-cortina-electrical-system-wiring-diagram.jpg)
 
 # Change One Thing at a Time
 
