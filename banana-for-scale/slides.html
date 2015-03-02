@@ -25,7 +25,7 @@
 
       .title-slide {
         background-color: #272822;
-        color: #777872;
+        color: #f3f3f3;
         text-shadow: 0 0 20px #333;
       }
       .title-slide h1 {
@@ -620,7 +620,7 @@ GC is especially hard to tune correctly if you have app with high memory churn
 If your heap is too small - frequent collections, but all the time
 
 ???
-Very frequent collections of the stop-the-world type
+Very frequent full collections of the stop-the-world type
 
 --
 
@@ -633,9 +633,12 @@ Everything stops
 And people die
 
 ???
+
+Fix it by having a HUGE heap
+
 Now you are deferring the obvious...  and now you have a huge stop-the-world pause
 
---	
+--
 
 Swap to disk
 
@@ -675,7 +678,10 @@ It is very hard to find a picture on virtualization :-)
 ```
 
 ???
-**Raise your hand if you think this is a busy system?**
+
+This is an example of a load average metric from a Linux system
+
+Explain what it tells you
 
 You have know how many CPUs the system has - explain
 
@@ -683,11 +689,15 @@ You have know how many CPUs the system has - explain
 
 What does it mean when the CPU is virtual?
 
+???
+Virtual CPU
+
 --
 
 Or, if the CPU allocation is dynamically scaled?
 
 ???
+Dynamically scaled?
 
 *** Lessons ***
 * Very short and sweet - It is hard to understand how your system is doing if you don't understand the tech it is running on
@@ -743,9 +753,11 @@ Slowing down the transaction log
 
 ---
 
-class: title-slide, center, middle
+class: title-slide, center, bottom
 
 background-image: url(images/file-handles.jpg)
+
+## (file handles, btw)
 
 ???
 This time the call was more serious
@@ -790,7 +802,7 @@ background-image: url(images/queue.jpg)
 
 ???
 
-Message queues are really simple things, yes?
+This is a quirky problem we had with message queues
 
 **What exactly does the queue length tell you?**
 
@@ -798,9 +810,9 @@ Both messages that still need to be consumed AND messages that have been picked 
 
 Recently had this very strange problem where messages would look as if they are stuck on a queue, but not all the consumers would be busy
 
-Had us flummoxed for a while - until we realized that you can set up a "consumer flow limit", or prefetch message count
+Had us flummoxed for a while - until we realized that you can set up a prefetch message count
 
-This is the number of messages that will be predelivered to a consumer in a batch
+This is the number of messages that will be predelivered to a consumer in a batch for performance
 
 In this case the few busy consumers had prefetched all the messages off the queue - and the other consumers were idle
 
@@ -811,7 +823,7 @@ It held up all the messages in the prefetched list - and they were stuck forever
 A bit like standing in the queue at Pick 'n Pay and the person right at the front has an item without a price
 
 ** Lessons **
-* You have to understand the most mundane things
+* Not sure...  universe is out to get us?
 
 ---
 
