@@ -369,7 +369,7 @@ But... does it help with metrics? Let's see... we can most likely get the
 ---
 
 layout: false
-class: center, middle
+class: center, middle, title-slide
 background-image: url(images/Windflower-05237-nevit.JPG)
 
 ???
@@ -564,12 +564,6 @@ The maximum value of 32 bit signed integer is...
 
 --
 
-Increment by 1 gives you -2147483648
-
-???
-In Java, if you increment an integer beyond its maximum value it will wrap to the negative value, and give you..
-
---
 
 At 10 TPS:  59652 hours (6.8 years)
 
@@ -582,6 +576,13 @@ At 200 TPS:  2982 hours (124 days)
 
 ???
 At 200 TPS you will destroy them in 124 days
+
+--
+
+Increment beyond max it will wrap around into negative
+
+???
+In Java, if you increment an integer beyond its maximum value it will wrap to the negative value, and give you..
 
 **Pause**
 
@@ -599,19 +600,15 @@ Using an integer for an id is dangerous
 
 Rather use a long, with max of 9223372036854775807
 
-???
-Rather use a long, with max of 
-nine quintillion two hundred twenty-three quadrillion three hundred seventy-two trillion thirty-six billion eight hundred fifty-four million seven hundred seventy-five thousand eight hundred seven
-
---
-
 At 200 TPS that will last... 1462356043 years
 
 ???
+Rather use a long
 
 **Lessons**
-* Your system will grow much faster than you anticipate
-* Do not just blindly trust third-party libraries!
+* Third party libraries from jboss
+* We did go through a deliberate selection process for this framework
+* Did not look at the code
 
 ---
 
@@ -634,7 +631,7 @@ GC is especially hard to tune correctly if you have app with high memory churn
 
 ## Garbage collection
 
-If your heap is too small - frequent collections, but all the time
+If the heap is small - frequent short collections
 
 ???
 Very frequent full collections of the stop-the-world type
@@ -645,9 +642,7 @@ So you fix it by having a HUGE heap
 
 And it runs a **monster** stop the world collection
 
-Everything stops
-
-And people die
+Everything stops...  And people die
 
 ???
 
@@ -657,22 +652,16 @@ Now you are deferring the obvious...  and now you have a huge stop-the-world pau
 
 --
 
-Swap to disk
+Imagine swapping to disk at the same time
 
 ???
 Even worse - if you're oversubscribing memory in the system it may start swapping to disk during GC
 
 Then it becomes really really slow
 
---
-
-Collector implementation and parameters
-
-???
-Change one thing at a time, and study the results
-
 ** Lessons **
 * Understand your application's memory usage patterns.  You may even have to change it.
+* Change one thing at a time, and study the results
 * Experiment where no one can get hurt (do try this at home)
 * Have verbose gc logs switched on (with some other switches) - and analyze it
 
@@ -729,11 +718,13 @@ background-image: url(images/cromemco.jpg)
 ???
 Back to a real life example
 
-The system mysteriously started slowing down more and more
+Here we had a system that was working fine one day and was snailing along the next day
+
+That's usually a clear signal to me that something was changed somethere - however hard the protests otherwise
 
 All the normal culprits were investigated - could not really find the cause
 
-Eventually some thread dumps were produced
+Eventually we went trawling through some thread dumps
 
 ---
 
@@ -780,6 +771,8 @@ background-image: url(images/file-handles.jpg)
 This time the call was more serious
 
 The system just stopped working
+
+Trawled through a few hundred more thread dumps, looked at many log files
 
 ---
 
